@@ -1,0 +1,12 @@
+{
+  "mainnet": {
+    "UselessNFT": "0x1Bce0af67D5723E469beE26323897D2f12A3Eb78",
+    "UselessMultiSig": "0xB77D2befbB8AFe3F9ef5d9eA94187FCc478a7cc3",
+    "UselessRoyaltyReceiver": "0xcA7Fe13B4507735DD6C28c14d2496138736dBD02"
+  },
+  "rinkeby": {
+    "UselessNFT": "0x1Bce0af67D5723E469beE26323897D2f12A3Eb78",
+    "UselessMultiSig": "0xB77D2befbB8AFe3F9ef5d9eA94187FCc478a7cc3",
+    "UselessRoyaltyReceiver": "0xcA7Fe13B4507735DD6C28c14d2496138736dBD02"
+  }
+}

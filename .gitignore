@@ -1,0 +1,23 @@
+node_modules
+
+#Hardhat files
+cache
+artifacts
+deployments
+
+dev-keys.json
+package-lock.json
+
+yarn.lock
+
+.DS_Store
+
+.idea
+
+src/types
+
+coverage
+
+.env
+
+scripts/build
