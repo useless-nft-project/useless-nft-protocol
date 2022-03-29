@@ -4,7 +4,7 @@ const { writeFile } = fsPromises
 require('dotenv').config();
 
 export enum Tier {
-  Platinum = 'Platinum',
+  Diamond = 'Diamond',
   Gold = 'Gold',
   Silver = 'Silver',
   Bronze = 'Bronze',
@@ -12,7 +12,7 @@ export enum Tier {
   Unknown = 'Not Revealed Yet',
 }
 
-const allTiers = [Tier.Platinum, Tier.Gold, Tier.Silver, Tier.Bronze, Tier.Pleb, Tier.Unknown];
+const allTiers = [Tier.Diamond, Tier.Gold, Tier.Silver, Tier.Bronze, Tier.Pleb, Tier.Unknown];
 
 
 function createJsonContentForTier(id: number, tier: number, imageIpfsFolder: string): string {
