@@ -90,16 +90,16 @@ describe('UselessRoyaltyReceiver', () => {
         .to.be.revertedWith('council is not set up yet');
 
       const quantity = 5;
-      const user1Results = Array.from(Array(2250 / quantity).keys()).map(() => {
+      const user1Results = Array(2250 / quantity).fill(0).map(() => {
         return uselessNFT.connect(user1).mint(quantity, { value: mintPrice.mul(quantity) });
       });
-      const user2Results = Array.from(Array(2495 / quantity).keys()).map(() => {
+      const user2Results = Array(2495 / quantity).fill(0).map(() => {
         return uselessNFT.connect(user2).mint(quantity, { value: mintPrice.mul(quantity) });
       });
-      const user3Results = Array.from(Array(2505 / quantity).keys()).map(() => {
+      const user3Results = Array(2505 / quantity).fill(0).map(() => {
         return uselessNFT.connect(user3).mint(quantity, { value: mintPrice.mul(quantity) });
       });
-      const user4Results = Array.from(Array(2750 / quantity).keys()).map(() => {
+      const user4Results = Array(2750 / quantity).fill(0).map(() => {
         return uselessNFT.connect(user4).mint(quantity, { value: mintPrice.mul(quantity) });
       });
 

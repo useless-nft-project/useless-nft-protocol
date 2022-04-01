@@ -1,11 +1,11 @@
 import { run } from 'hardhat';
 
 async function main() {
-  const uselessNFTAddress = '0x1Bce0af67D5723E469beE26323897D2f12A3Eb78';
+  const uselessNFTAddress = '0xA8aB006abF95BafFD272FE6C1422c5243d1b4768';
   await run('verify:verify', {
     address: uselessNFTAddress,
     constructorArguments: [
-      'https://gateway.pinata.cloud/ipfs/',
+      'ipfs://QmQVVMhsWZZeC31ixA1oQmrSaSRfmmyLFHhfYHdnXRLTcX/',
       '0x1849E9695681EdC8B37e9EF2f642228D67884Bd9',
       '0x343cF422c8a618442C3C91472a81fBAd4dD7A3c7',
       '10000',
@@ -18,14 +18,14 @@ async function main() {
     contract: 'contracts/UselessNFT.sol:UselessNFT',
   });
   await run('verify:verify', {
-    address: '0xB77D2befbB8AFe3F9ef5d9eA94187FCc478a7cc3',
+    address: '0x956b9969a03218784bC4C3a2Bc606a7d71AFD7FF',
     constructorArguments: [
       uselessNFTAddress,
     ],
     contract: 'contracts/UselessMultiSig.sol:UselessMultiSig',
   });
   await run('verify:verify', {
-    address: '0xcA7Fe13B4507735DD6C28c14d2496138736dBD02',
+    address: '0x518338fa1d476eb77d35AECB09C44cDB0A95A1dc',
     constructorArguments: [
       uselessNFTAddress,
       '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',

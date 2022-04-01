@@ -127,7 +127,7 @@ describe('UselessMultiSig', () => {
       expect(owners.length).to.eq(11);
 
       const platinumId = await uselessNFT.getPlatinumTokenId();
-      const goldId = platinumId.add(3000).mod(maxSupply);
+      const goldId = platinumId.add(997).mod(1000);
 
       expect(await uselessNFT.getTier(platinumId)).to.eq(0);
       expect(await uselessNFT.getTier(goldId)).to.eq(1);
@@ -191,7 +191,7 @@ describe('UselessMultiSig', () => {
         .to.be.revertedWith('owner is not useless enough');
 
       for (let i = 0; i < 4; i++) {
-        const currentGoldId = goldId.add(i);
+        const currentGoldId = goldId.add((i + 1) * 1000).mod(maxSupply);
         const currentGoldOwner = await uselessNFT.ownerOf(currentGoldId);
         const currentGoldSigner = await ethers.provider.getSigner(currentGoldOwner);
         const result2 = await council.connect(currentGoldSigner).confirmTransaction(currentGoldId, 0);
@@ -227,13 +227,13 @@ describe('UselessMultiSig', () => {
       expect(confirmationsBefore.findIndex((value) => value.eq(platinumId))).to.not.eq(-1);
       expect(await council.getConfirmationCount(0)).to.eq(4);
 
-      let currentGoldId = goldId.add(4);
+      let currentGoldId = goldId.add(5000).mod(maxSupply);
       let currentGoldOwner = await uselessNFT.ownerOf(currentGoldId);
       let currentGoldSigner = await ethers.provider.getSigner(currentGoldOwner);
       const result2_1 = await council.connect(currentGoldSigner).confirmTransaction(currentGoldId, 0);
       await await expect(result2_1).to.emit(council, 'Confirmation').withArgs(currentGoldId, 0);
 
-      currentGoldId = goldId.add(5);
+      currentGoldId = goldId.add(6000).mod(maxSupply);
       currentGoldOwner = await uselessNFT.ownerOf(currentGoldId);
       currentGoldSigner = await ethers.provider.getSigner(currentGoldOwner);
       const result2_2 = await council.connect(currentGoldSigner).confirmTransaction(currentGoldId, 0);
@@ -248,7 +248,7 @@ describe('UselessMultiSig', () => {
         .to.be.revertedWith('useless transaction is already executed');
 
       {
-        const otherGoldId = goldId.add(9);
+        const otherGoldId = goldId.add(9000).mod(maxSupply);
         const otherGoldSigner = await ethers.provider.getSigner(await uselessNFT.ownerOf(otherGoldId));
         await expect(council.connect(otherGoldSigner!).executeTransaction(otherGoldId, 1))
           .to.be.revertedWith('useless transaction is not confirmed by this NFT');
@@ -262,7 +262,7 @@ describe('UselessMultiSig', () => {
       await council.connect(currentGoldSigner!).confirmTransaction(currentGoldId, 3);
 
       // we need 7 signers now, not 6
-      currentGoldId = currentGoldId.add(1);
+      currentGoldId = currentGoldId.add(1000).mod(maxSupply);
       currentGoldSigner = await ethers.provider.getSigner(await uselessNFT.ownerOf(currentGoldId));
       const result6 = await council.connect(currentGoldSigner).confirmTransaction(currentGoldId, 2);
       await expect(result6).to.emit(council, 'Confirmation').withArgs(currentGoldId, 2)
@@ -273,7 +273,7 @@ describe('UselessMultiSig', () => {
         );
 
       // we need 7 signers now, not 6
-      currentGoldId = currentGoldId.add(1);
+      currentGoldId = currentGoldId.add(1000).mod(maxSupply);
       currentGoldSigner = await ethers.provider.getSigner(await uselessNFT.ownerOf(currentGoldId));
       const result7 = await council.connect(currentGoldSigner).confirmTransaction(currentGoldId, 3);
       await expect(result7).to.emit(council, 'Confirmation').withArgs(currentGoldId, 3)

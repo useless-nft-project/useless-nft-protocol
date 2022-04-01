@@ -213,32 +213,35 @@ describe('UselessNFT', () => {
       const randomNumber = await uselessNFT.randomNumber();
       const result = randomNumber.mod(maxSupply);
       const platinumId = await uselessNFT.getPlatinumTokenId();
-      expect(maxSupply.sub(result)).to.eq(platinumId);
+      expect(result.eq(0) ? '0' : maxSupply.sub(result)).to.eq(platinumId);
 
-      const goldId = platinumId.add(3000).mod(maxSupply);
-      const silverId = goldId.add(3000).mod(maxSupply);
-      const bronzeId = silverId.add(3000).mod(maxSupply);
+      let platinumCount = 0;
+      let goldCount = 0;
+      let silverCount = 0;
+      let bronzeCount = 0;
+      let plebCount = 0;
+      const promises = Array(10000).fill(0).map((unused, i) => {
+        return uselessNFT.getTier(i).then(rarity => {
+          if (rarity === 0) {
+            platinumCount += 1;
+          } else if (rarity === 1) {
+            goldCount += 1;
+          } else if (rarity === 2) {
+            silverCount += 1;
+          } else if (rarity === 3) {
+            bronzeCount += 1;
+          } else if (rarity === 4) {
+            plebCount += 1;
+          }
+        });
+      });
+      await Promise.all(promises)
 
-      expect(await uselessNFT.getTier(platinumId)).to.eq(0);
-      expect(await uselessNFT.getTier(goldId)).to.eq(1);
-      expect(await uselessNFT.getTier(silverId)).to.eq(2);
-      expect(await uselessNFT.getTier(bronzeId)).to.eq(3);
-
-      // these are after platinum and before gold
-      expect(await uselessNFT.getTier(platinumId.add(1).mod(maxSupply))).to.eq(4);
-      expect(await uselessNFT.getTier(platinumId.add(2999).mod(maxSupply))).to.eq(4);
-
-      // these are after gold and before silver
-      expect(await uselessNFT.getTier(goldId.add(11).mod(maxSupply))).to.eq(4);
-      expect(await uselessNFT.getTier(goldId.add(2999).mod(maxSupply))).to.eq(4);
-
-      // these are after silver and before bronze
-      expect(await uselessNFT.getTier(silverId.add(101).mod(maxSupply))).to.eq(4);
-      expect(await uselessNFT.getTier(silverId.add(2999).mod(maxSupply))).to.eq(4);
-
-      // bronze leads directly into platinum
-      expect(await uselessNFT.getTier(bronzeId.add(999).mod(maxSupply))).to.eq(3);
-      expect(await uselessNFT.getTier(bronzeId.add(1000).mod(maxSupply))).to.eq(0);
+      expect(platinumCount).to.eq(1);
+      expect(goldCount).to.eq(10);
+      expect(silverCount).to.eq(100);
+      expect(bronzeCount).to.eq(1000);
+      expect(plebCount).to.eq(8889);
     });
 
     it('should work for full sale', async () => {
@@ -333,17 +336,17 @@ describe('UselessNFT', () => {
       await uselessNFT.connect(platinumOwnerSigner).setBaseURI(baseURI);
       expect(await uselessNFT.owner()).to.eq(platinumOwner);
 
-      const goldId = platinumId.add(3000).mod(maxSupply);
-      expect(await uselessNFT.tokenURI(goldId)).to.eq(`${baseURI}${goldId}_1.json`);
+      const goldId = platinumId.add(997).mod(1000);
+      expect(await uselessNFT.tokenURI(goldId)).to. eq(`${baseURI}${goldId}_1.json`);
 
-      const silverId = goldId.add(3000).mod(maxSupply);
+      const silverId = platinumId.add(94).mod(100);
       expect(await uselessNFT.tokenURI(silverId)).to.eq(`${baseURI}${silverId}_2.json`);
 
-      const bronzeId = silverId.add(3000).mod(maxSupply);
+      const bronzeId = platinumId.add(1).mod(10);
       expect(await uselessNFT.tokenURI(bronzeId)).to.eq(`${baseURI}${bronzeId}_3.json`);
 
       // subtracting 1 is the same as adding `maxSupply - 1`
-      const plebId = bronzeId.add(maxSupply.sub(1)).mod(maxSupply);
+      const plebId = platinumId.add(2).mod(maxSupply);
       expect(await uselessNFT.tokenURI(plebId)).to.eq(`${baseURI}${plebId}_4.json`);
 
       const randomTier = await uselessNFT.getTier(132);
@@ -460,13 +463,13 @@ describe('UselessNFT', () => {
       if (tier === 0) {
         return platinumId;
       } else if (tier === 1) {
-        return platinumId.add(3000).mod(maxSupply);
+        return platinumId.add(997).mod(1000);
       } else if (tier === 2) {
-        return platinumId.add(6000).mod(maxSupply);
+        return platinumId.add(94).mod(100);
       } else if (tier === 3) {
-        return platinumId.add(9000).mod(maxSupply);
+        return platinumId.add(1).mod(10);
       } else if (tier === 4) {
-        return platinumId.add(1).mod(maxSupply);
+        return platinumId.add(2).mod(maxSupply);
       } else {
         return Promise.reject(new Error('Invalid tier, found ' + tier));
       }

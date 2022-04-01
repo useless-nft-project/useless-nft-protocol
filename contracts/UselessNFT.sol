@@ -191,11 +191,11 @@ contract UselessNFT is ERC721, Ownable, ReentrancyGuard, VRFConsumerBase {
         uint result = _wrapIdIfNecessary((randomNumber % maxSupply) + _id);
         if (result == 0) {
             return UselessLibrary.Tier.TIER_ZERO;
-        } else if (result >= 3000 && result < 3010) {
+        } else if ((result + 3) % 1000 == 0) {
             return UselessLibrary.Tier.TIER_ONE;
-        } else if (result >= 6000 && result < 6100) {
+        } else if ((result + 6) % 100 == 0) {
             return UselessLibrary.Tier.TIER_TWO;
-        } else if (result >= 9000 && result < 10000) {
+        } else if ((result + 9) % 10 == 0) {
             return UselessLibrary.Tier.TIER_THREE;
         } else {
             return UselessLibrary.Tier.TIER_FOUR;
@@ -209,20 +209,20 @@ contract UselessNFT is ERC721, Ownable, ReentrancyGuard, VRFConsumerBase {
         }
 
         uint platinumTokenId = getPlatinumTokenId();
-        uint goldTokenStartId = _wrapIdIfNecessary(platinumTokenId + 3000);
+        uint goldTokenStartId = _wrapIdIfNecessary((platinumTokenId + 997) % 1000);
 
         uint[] memory result = new uint[](11);
         result[0] = platinumTokenId;
-        result[1] = _wrapIdIfNecessary(goldTokenStartId + 0);
-        result[2] = _wrapIdIfNecessary(goldTokenStartId + 1);
-        result[3] = _wrapIdIfNecessary(goldTokenStartId + 2);
-        result[4] = _wrapIdIfNecessary(goldTokenStartId + 3);
-        result[5] = _wrapIdIfNecessary(goldTokenStartId + 4);
-        result[6] = _wrapIdIfNecessary(goldTokenStartId + 5);
-        result[7] = _wrapIdIfNecessary(goldTokenStartId + 6);
-        result[8] = _wrapIdIfNecessary(goldTokenStartId + 7);
-        result[9] = _wrapIdIfNecessary(goldTokenStartId + 8);
-        result[10] = _wrapIdIfNecessary(goldTokenStartId + 9);
+        result[1] = _wrapIdIfNecessary(goldTokenStartId + (0 * 1000));
+        result[2] = _wrapIdIfNecessary(goldTokenStartId + (1 * 1000));
+        result[3] = _wrapIdIfNecessary(goldTokenStartId + (2 * 1000));
+        result[4] = _wrapIdIfNecessary(goldTokenStartId + (3 * 1000));
+        result[5] = _wrapIdIfNecessary(goldTokenStartId + (4 * 1000));
+        result[6] = _wrapIdIfNecessary(goldTokenStartId + (5 * 1000));
+        result[7] = _wrapIdIfNecessary(goldTokenStartId + (6 * 1000));
+        result[8] = _wrapIdIfNecessary(goldTokenStartId + (7 * 1000));
+        result[9] = _wrapIdIfNecessary(goldTokenStartId + (8 * 1000));
+        result[10] = _wrapIdIfNecessary(goldTokenStartId + (9 * 1000));
         return result;
     }
 
